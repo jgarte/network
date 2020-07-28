@@ -1,0 +1,23 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+  <div class="container">
+    <h1>All Posts</h1>
+    <div class="card">
+      <h3>New Post</h3>
+      <form action="">
+        {{form.non_field_errors}}
+        {% csrf_token %}
+        <div class="form-group">
+          {{form.content.errors}}
+          <label for="{{form.content.id_for_label}}"></label>
+          {{form.content}}
+        </div>
+        <button class="btn btn-primary" type="submit">Post</button>
+      </form>
+    </div>  {% for post in posts %}
+    {% empty %}
+      <p>No posts.</p>
+    {% endfor %}
+  </div>
+{% endblock %}
