@@ -1,23 +1,42 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+
   <div class="container">
-    <h1>All Posts</h1>
-    <div class="card">
-      <h3>New Post</h3>
-      <form action="">
-        {{form.non_field_errors}}
-        {% csrf_token %}
-        <div class="form-group">
-          {{form.content.errors}}
-          <label for="{{form.content.id_for_label}}"></label>
-          {{form.content}}
+    <section>
+      <h1 class="pt-1 pb-1">All Posts</h1>
+      {% if user.is_authenticated %}
+        <div class="card p-3">
+          <h3>New Post</h3>
+          <form action="{% url 'posts' %}" method="post">
+            {{form.non_field_errors}}
+            {% csrf_token %}
+            <div class="form-group">
+              {{form.content.errors}}
+              <label for="{{form.content.id_for_label}}"></label>
+              {{form.content}}
+            </div>
+            <button class="btn btn-primary" type="submit">Post</button>
+          </form>
         </div>
-        <button class="btn btn-primary" type="submit">Post</button>
-      </form>
-    </div>  {% for post in posts %}
-    {% empty %}
-      <p>No posts.</p>
-    {% endfor %}
+    </section>
+      {% endif %}
+      {% for post in posts %}
+        <!-- TODO wrap in .row? -->
+        <section>
+          <ul class="list-group mt-3">
+            <!-- TODO link to edit URL -->
+            <li href="#" class="list-group-item">
+              <div class="d-flex w-100 justify-content-between">
+                <h4 class="mb-1">@{{post.author.username}}</h4>
+                <small class="text-muted">{{post.date_created}}</small>
+              </div>
+              <p class="mb-1">{{post.content}}</p>
+              <p class="card-text"><small class="text-muted">{{post.likes.count}} likes</small></p>
+            </li>
+          </ul></section>
+      {% empty %}
+          <p>No posts.</p>
+      {% endfor %}
   </div>
 {% endblock %}

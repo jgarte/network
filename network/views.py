@@ -4,9 +4,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import ListView, CreateView
-from django.views.generic.edit import ModelFormMixin
-from django.views.generic.detail import SingleObjectMixin
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+#from django.views.generic.detail import SingleObjectMixin
+from django.views import View
 
 from .models import User, Post
 from .forms import PostForm
@@ -16,8 +16,8 @@ from .forms import PostForm
 #        text-based post by filling in text into a text area and then
 #        clicking a button to submit the post.
 
-class IndexView(ListView):
-    """Shows a form to create a post and lists the posts in database."""
+class PostsView(ListView):
+    """Shows a form to create a post and lists all the posts."""
     model = Post
     context_object_name = 'posts'
     template_name = 'network/index.html'
@@ -26,6 +26,28 @@ class IndexView(ListView):
         context = super().get_context_data(**kwargs)
         context['form'] = PostForm()
         return context
+
+
+class CreatePost(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'network/index.html'  # for error messages
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class AllPostsView(View):
+    """List all posts."""
+
+    def get(self, request, *args, **kwargs):
+        view = PostsView.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        view = CreatePost.as_view()
+        return view(request, *args, **kwargs)
 
 
 def login_view(request):
@@ -39,7 +61,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("posts"))
         else:
             return render(request, "network/login.html", {
                 "message": "Invalid username and/or password."
@@ -50,7 +72,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("posts"))
 
 
 def register(request):
