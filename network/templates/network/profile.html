@@ -1,0 +1,14 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+  <div class="container">
+
+    <h1>{{user_profile}}'s Profile</h1>
+    <p>followers: {{user.followers.count}}</p>
+    <p>following: {{user.following.count}}</p>
+    {% if user_profile.id != user.id %}
+      <button>Follow</button>
+    {% endif %}
+    {% include "network/posts.html" %}
+  </div>
+{% endblock %}

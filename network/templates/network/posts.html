@@ -1,0 +1,17 @@
+{% for post in posts %}
+  <!-- TODO wrap in .row? -->
+  <section>
+    <ul class="list-group mt-3">
+      <!-- TODO link to edit URL -->
+      <li class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h4 class="mb-1"><a href="{% url 'profile' post.author.username %}">@{{post.author.username}}</a></h4>
+          <small class="text-muted">{{post.date_created}}</small>
+        </div>
+        <p class="mb-1">{{post.content}}</p>
+        <p class="card-text"><small class="text-muted">{{post.likes.count}} likes</small></p>
+      </li>
+    </ul></section>
+{% empty %}
+    <p>No posts.</p>
+{% endfor %}
