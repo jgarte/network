@@ -49,14 +49,31 @@ class AllPostsView(View):
         return view(request, *args, **kwargs)
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class ProfileView(ListView):
     template_name = "network/profile.html"
     context_object_name = "posts"
     paginate_by = 10
 
     def get_queryset(self):
+        # TODO maybe here I add extra info to see if the followers
+        # follows the followee to toggle a button in the view as to
+        # tell the _followers_ that they already
+        # follow the followee
+        # Can be done:
+        # 1. find all users that follower follows
+        # 2. store that data in localStorage?
+        # 3. on every request check that the list of followers is not in the
+        # localStorage object
+
+        # NOTE this looks more promising
+        # or I could just send the result of the query for the user profile in
+        # the context and check in the template whether or not the follower
+        # already follows the followee
         self.user_profile = get_object_or_404(User,
                                               username=self.kwargs['username'])
+
+        # TODO self.follows =
         return Post.objects.filter(
             author=self.user_profile).order_by('-date_created')
 
