@@ -38,6 +38,8 @@
     user toggle whether or not they are following this user's
     posts. Note that this only applies to any “other” user: a user
     should not be able to follow themselves.
+    - [ ] Add extra context in the ProfileView (in comments)
+    - [ ] Check in the template for ProfileView if this context exists
 
 - [X] *Following*: The “Following” link in the navigation bar should
   take the user to a page where they see all posts made by users that
@@ -57,6 +59,10 @@
 
 - [ ] *Edit Post*: Users should be able to click an “Edit” button or
   link on any of their own posts to edit that post.
+  - NOTE: I could enable in the post template a button that toggles
+    the UI to change the content's body with a textarea element.
+    Then, the elment would toggle this state and change the button's
+    name, which when click sends an AJAX request to the server
   - [ ] When a user clicks “Edit” for one of their own posts, the
     content of their post should be replaced with a =textarea= where
     the user can edit the content of their post.
@@ -66,6 +72,7 @@
   - [ ] For security, ensure that your application is designed such that
     it is not possible for a user, via any route, to edit another
     user's posts.
+
 
 - [ ] ~“Like” and “Unlike”~: Users should be able to click a button or
   link on any post to toggle whether or not they “like” that post.
