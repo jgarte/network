@@ -3,7 +3,9 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, CreateView, TemplateView
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.mixins import LoginRequiredMixin
 #from django.views.generic.detail import SingleObjectMixin
 from django.views import View
