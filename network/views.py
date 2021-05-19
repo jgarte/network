@@ -12,10 +12,6 @@ from django.conf import settings
 from .models import User, Post
 from .forms import PostForm
 
-# TODO - [ ] *New Post*: Users who are signed in should be able to write a new
-#        text-based post by filling in text into a text area and then
-#        clicking a button to submit the post.
-
 
 class PostsView(ListView):
     """Shows a form to create a post and lists all the posts."""
